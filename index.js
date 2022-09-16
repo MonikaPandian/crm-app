@@ -31,7 +31,7 @@ app.use(express.json())
 //API endpoints
 
 app.get("/",(request,response)=>{
-    response.send("Hello Everyone These are the routes" )
+    response.send("Hello Everyone These are the API endpoints /customers, /leads, /tasks, /service-requests, /companies, /contacts" )
 })
 
 //Routes
