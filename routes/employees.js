@@ -8,9 +8,8 @@ const router = express.Router();
 //signup - to insert data to db
 router.post("/signup",async (request, response) =>{
     const { firstName, lastName, email, password } = request.body;
-    const name = firstName + lastName
 
-    const isUserExist = await client.db("b37wd").collection("employees").findOne({ name : name})
+    const isUserExist = await client.db("b37wd").collection("employees").findOne({ firstName : firstName , lastName: lastName})
 
     if(isUserExist){
         response.status(400).send({ message: "Username already taken"})
@@ -24,17 +23,15 @@ router.post("/signup",async (request, response) =>{
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password,salt)
-    const result = await client.db("b37wd").collection("employees").insertOne({ name : name, password: hashedPassword});
+    const result = await client.db("b37wd").collection("employees").insertOne({ firstName : firstName, lastName: lastName, email: email, password: hashedPassword});
     response.send(result)
 })
 
 //login 
-
-router.post("login", async(request,response)=>{
+router.post("/login", async(request,response)=>{
     const {firstName, lastName, email, password } = request.body;
-    const name = firstName + lastName ;
 
-    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ name : name})
+    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ firstName : firstName, lastName: lastName})
     if(!employeeFromDB){
         response.status(400).send( { message : "Invalid credentials"})
         return;
@@ -49,7 +46,7 @@ router.post("login", async(request,response)=>{
     }
     //issue token
     const token = jwt.sign({ id :employeeFromDB._id}, process.env.SECRET_KEY);
-    response.send({ meassge : "Successful login", token : token});
+    response.send({ message : "Successful login", token : token});
 })
 
 export const employeesRouter = router;
