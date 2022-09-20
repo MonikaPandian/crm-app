@@ -35,7 +35,7 @@ router.put("/:id", async(request,response) => {
 //delete a customer
 router.delete("/:id",async(request,response)=>{
     const { id } = request.params;
-    const result = await client.db("b37wd").collection("customers").deleteOne({id: id})
+    const result = await client.db("b37wd").collection("customers").deleteOne({id: +id})
     response.send(result)
 })
 
