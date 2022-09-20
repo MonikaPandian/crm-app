@@ -10,6 +10,12 @@ router.get("/",async (request,response)=>{
     response.send(customers);
 })
 
+//to get a customer
+router.get("/:id",async (request,response)=>{
+    const customer = await client.db("b37wd").collection("customers").findOne({ _id: id })
+    response.send(customer);
+})
+
 //to insert customer to db
 router.post("/",async(request,response)=>{
     const newCustomer = request.body;
