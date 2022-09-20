@@ -13,7 +13,7 @@ router.get("/",async (request,response)=>{
 //to get a customer
 router.get("/:id",async (request,response)=>{
     const { id } = request.params;
-    const customer = await client.db("b37wd").collection("customers").findOne({ _id: id })
+    const customer = await client.db("b37wd").collection("customers").findOne({ id: id })
     response.send(customer);
 })
 
