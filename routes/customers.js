@@ -28,7 +28,7 @@ router.post("/",async(request,response)=>{
 router.put("/:id", async(request,response) => {
     const { id } = request.params;
     const updateCustomer = request.body;
-    const result = await client.db("b37wd").collection("customers").updateOne({ id: id }, { $set: updateCustomer })
+    const result = await client.db("b37wd").collection("customers").updateOne({ id: +id }, { $set: updateCustomer })
     response.send(result)
 
 })
