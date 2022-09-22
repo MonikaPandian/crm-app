@@ -23,7 +23,7 @@ router.post("/signup",async (request, response) =>{
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password,salt)
-    const result = await client.db("b37wd").collection("employees").insertOne({ username: email, firstName : firstName, lastName: lastName, password: hashedPassword});
+    const result = await client.db("b37wd").collection("employees").insertOne({ username: username, firstName : firstName, lastName: lastName, password: hashedPassword});
     response.send(result)
 })
 
