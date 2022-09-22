@@ -49,4 +49,9 @@ router.post("/login", async(request,response)=>{
     response.send({ message : "Successful login", token : token});
 })
 
+router.post("/send-email", async(request,response)=>{
+
+    response.send({ message : "okk"});
+})
+
 export const employeesRouter = router;
