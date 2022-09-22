@@ -7,9 +7,9 @@ const router = express.Router();
 
 //signup - to insert data to db
 router.post("/signup",async (request, response) =>{
-    const { firstName, lastName, email, password } = request.body;
+    const { email, firstName, lastName, password } = request.body;
 
-    const isUserExist = await client.db("b37wd").collection("employees").findOne({ firstName : firstName , lastName: lastName})
+    const isUserExist = await client.db("b37wd").collection("employees").findOne({ username : email})
 
     if(isUserExist){
         response.status(400).send({ message: "Username already taken"})
@@ -23,7 +23,7 @@ router.post("/signup",async (request, response) =>{
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password,salt)
-    const result = await client.db("b37wd").collection("employees").insertOne({ firstName : firstName, lastName: lastName, email: email, password: hashedPassword});
+    const result = await client.db("b37wd").collection("employees").insertOne({ username: email, firstName : firstName, lastName: lastName, password: hashedPassword});
     response.send(result)
 })
 
@@ -31,7 +31,7 @@ router.post("/signup",async (request, response) =>{
 router.post("/login", async(request,response)=>{
     const {firstName, lastName, email, password } = request.body;
 
-    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ firstName : firstName, lastName: lastName})
+    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ username : email})
     if(!employeeFromDB){
         response.status(400).send( { message : "Invalid credentials"})
         return;
