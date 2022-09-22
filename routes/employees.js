@@ -7,9 +7,9 @@ const router = express.Router();
 
 //signup - to insert data to db
 router.post("/signup",async (request, response) =>{
-    const { email, firstName, lastName, password } = request.body;
+    const { username, firstName, lastName, password } = request.body;
 
-    const isUserExist = await client.db("b37wd").collection("employees").findOne({ username : email})
+    const isUserExist = await client.db("b37wd").collection("employees").findOne({ username : username})
 
     if(isUserExist){
         response.status(400).send({ message: "Username already taken"})
