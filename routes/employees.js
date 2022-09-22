@@ -29,9 +29,9 @@ router.post("/signup",async (request, response) =>{
 
 //login 
 router.post("/login", async(request,response)=>{
-    const {firstName, lastName, email, password } = request.body;
+    const {username, firstName, lastName , password } = request.body;
 
-    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ username : email})
+    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ username : username})
     if(!employeeFromDB){
         response.status(400).send( { message : "Invalid credentials"})
         return;
