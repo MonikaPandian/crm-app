@@ -8,8 +8,7 @@ import { contactsRouter } from './routes/contacts.js';
 import { leadsRouter } from './routes/leads.js';
 import { serviceRequestsRouter } from './routes/serviceRequests.js';
 import { tasksRouter } from './routes/tasks.js';
-import { employeesRouter } from './routes/employees.js'
-
+import { employeesRouter } from './routes/employees.js';
 
 dotenv.config()
 const app = express();

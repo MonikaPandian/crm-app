@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { client } from "../index.js";
+import NodeMailer from 'nodemailer'; 
 
 const router = express.Router();
 
@@ -50,8 +51,42 @@ router.post("/login", async(request,response)=>{
 })
 
 router.post("/send-email", async(request,response)=>{
+    const { username } = request.body;
 
-    response.send({ message : "okk"});
+    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ username : username})
+    if(!employeeFromDB){
+        response.status(400).send( { message : "Enter a valid and registered email Id"})
+        return;
+    }
+
+    const otpCode = Math.floor((Math.random()*100000))
+    //const otpData = {username:username, code:otpCode, expireIn: new Date().getTime() + 300*1000}
+
+    var transporter = NodeMailer.createTransport({
+        service : 'gmail',
+        auth:{
+            user:'panmonikmm@gmail.com',
+            pass:'lxkugchepioxgtmr'
+        }
+    });
+
+    var mailOptions = {
+        from : 'panmonikmm@gmail.com',
+        to : 'monikapandian97@gmail.com',
+        subject:'You have requested for password reset',
+        text:`Enter the otp below to reset the password ${otpCode}`
+    };
+
+    transporter.sendMail(mailOptions,function(error,info){
+        if(error){
+            console.log(error);
+        }
+        else{
+            console.log('Email sent:'+ info.response);
+        }
+    })
+
+    response.send({ message : "success",otp : otpCode });
 })
 
 export const employeesRouter = router;
