@@ -70,7 +70,7 @@ router.post("/send-email", async (request, response) => {
     }
 
     const token = jwt.sign(payload, secret, { expiresIn: '15m' })
-    const link = `http://localhost:3000/employees/reset-password/${employeeFromDB._id}/${token}`;
+    const link = `https://customer-relation-manage-app.herokuapp.com/employees/reset-password/${employeeFromDB._id}/${token}`;
 
     var transporter = NodeMailer.createTransport({
         service: 'gmail',
