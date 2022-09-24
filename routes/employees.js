@@ -50,17 +50,26 @@ router.post("/login", async(request,response)=>{
     response.send({ message : "Successful login", token : token});
 })
 
+//forgot-password send-email
 router.post("/send-email", async(request,response)=>{
     const { username } = request.body;
 
+    //Make sure user exists in database
     const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ username : username})
+   
     if(!employeeFromDB){
         response.status(400).send( { message : "Enter a valid and registered email Id"})
         return;
     }
+    //User exist and now create a one time link valid for 15 minutes
+    const secret = process.env.SECRET_KEY + employeeFromDB.password;
+    const payload = {
+        email : employeeFromDB.username,
+        id : employeeFromDB._id
+    }
 
-    const otpCode = Math.floor((Math.random()*100000))
-    //const otpData = {username:username, code:otpCode, expireIn: new Date().getTime() + 300*1000}
+    const token = jwt.sign(payload, secret, {expiresIn: '15m'})
+    const link = `http://localhost:3000/reset-password/${employeeFromDB._id}/${token}`;
 
     var transporter = NodeMailer.createTransport({
         service : 'gmail',
@@ -72,9 +81,11 @@ router.post("/send-email", async(request,response)=>{
 
     var mailOptions = {
         from : 'panmonikmm@gmail.com',
-        to : 'monikapandian97@gmail.com',
-        subject:'You have requested for password reset',
-        text:`Enter the otp below to reset the password ${otpCode}`
+        to : `${employeeFromDB.username}`,
+        subject:'CRM Application Password reset link',
+        html:`We have received your request for reset password. Click this link to reset your password.<br>
+              <a href = ${link}>Click Here</a><br>
+              <p>This link is valid for 15 minutes from your request initiation for password recovery.</p>`
     };
 
     transporter.sendMail(mailOptions,function(error,info){
@@ -86,8 +97,23 @@ router.post("/send-email", async(request,response)=>{
         }
     })
 
-    response.send({ message : "success",otp : otpCode });
+    response.send('Success Password reset link has been sent to your mail');
 })
 
+router.get("/reset-password/:id/:token",async(request,response)=>{
+   const { id, token } = request.params;
+   console.log(id)
+
+   //check if this id exist in database
+   const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ id : id })
+   console.log(employeeFromDB)
+   
+   if(!employeeFromDB){
+    response.status(400).send( { message : "Enter a valid and registered email Id"})
+    return;
+    }
+
+    response.send("success")
+})
 
 export const employeesRouter = router;
