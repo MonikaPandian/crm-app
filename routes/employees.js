@@ -101,6 +101,7 @@ router.post("/send-email", async (request, response) => {
     response.send({ message: "success" });
 })
 
+//reset password
 router.post("/reset-password", async (request, response) => {
     const { id, token, password } = request.body;
 
