@@ -114,7 +114,7 @@ router.post("/reset-password/:id/:token",async(request,response)=>{
     return;
     }
 
-    response.send("success")
+    response.send({message: "success"})
 })
 
 export const employeesRouter = router;
