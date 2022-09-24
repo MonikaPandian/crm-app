@@ -101,10 +101,9 @@ router.post("/send-email", async(request,response)=>{
     response.send({message : "success"});
 })
 
-router.post("/reset-password/:id/:token",async(request,response)=>{
-   const { id, token } = request.params;
-   console.log(id)
-
+router.post("/reset-password",async(request,response)=>{
+   const { id, token, password } = request.body;
+   
    //check if this id exist in database
    const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ _id: ObjectId(id) })
    console.log(employeeFromDB)
