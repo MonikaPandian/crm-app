@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { client } from "../index.js";
 import NodeMailer from 'nodemailer'; 
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -69,7 +70,7 @@ router.post("/send-email", async(request,response)=>{
     }
 
     const token = jwt.sign(payload, secret, {expiresIn: '15m'})
-    const link = `http://localhost:3000/reset-password/${employeeFromDB._id}/${token}`;
+    const link = `http://localhost:3000/employees/reset-password/${employeeFromDB._id}/${token}`;
 
     var transporter = NodeMailer.createTransport({
         service : 'gmail',
@@ -105,7 +106,7 @@ router.post("/reset-password/:id/:token",async(request,response)=>{
    console.log(id)
 
    //check if this id exist in database
-   const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ id : id })
+   const employeeFromDB = await client.db("b37wd").collection("employees").findOne({ _id: ObjectId(id) })
    console.log(employeeFromDB)
    
    if(!employeeFromDB){
