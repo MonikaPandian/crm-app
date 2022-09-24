@@ -100,7 +100,7 @@ router.post("/send-email", async(request,response)=>{
     response.send('Success Password reset link has been sent to your mail');
 })
 
-router.get("/reset-password/:id/:token",async(request,response)=>{
+router.post("/reset-password/:id/:token",async(request,response)=>{
    const { id, token } = request.params;
    console.log(id)
 
