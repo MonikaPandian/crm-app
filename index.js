@@ -9,6 +9,7 @@ import { leadsRouter } from './routes/leads.js';
 import { serviceRequestsRouter } from './routes/serviceRequests.js';
 import { tasksRouter } from './routes/tasks.js';
 import { employeesRouter } from './routes/employees.js';
+import { usersRouter } from './routes/users.js';
 
 dotenv.config()
 const app = express();
@@ -42,5 +43,6 @@ app.use('/companies',companiesRouter)
 app.use('/contacts',contactsRouter)
 
 app.use('/employees',employeesRouter)
+app.use('/users',usersRouter)
 
 app.listen(PORT,() => console.log("Server started on port",PORT));
