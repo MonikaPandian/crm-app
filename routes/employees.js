@@ -70,7 +70,7 @@ router.post("/send-email", async (request, response) => {
     }
 
     const token = jwt.sign(payload, secret, { expiresIn: '15m' })
-    const link = `http://crm-application/reset-password/${employeeFromDB._id}/${token}`;
+    const link = `https://customer-relation-management-0336a7.netlify.app/reset-password/${employeeFromDB._id}/${token}`;
 
     var transporter = NodeMailer.createTransport({
         service: 'gmail',
