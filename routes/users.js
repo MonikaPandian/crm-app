@@ -37,16 +37,16 @@ router.post("/forgot-password", async (request, response) => {
             response.status(400).send({ message: "User not exists !! Please signup and create a new one" })
             return;
         }
-        const secret = process.env.SECRET_KEY + oldUser.password
-        const payload = {
-            email: oldUser.username,
-            id: oldUser._id
-        }
-        //User exist and now create a one time link valid for 15 minutes
-        const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-        const link = `http://localhost:3000/reset-password/${oldUser._id}/${token}`;
-        console.log(link)
-        response.send({message:success})
+        // const secret = process.env.SECRET_KEY + oldUser.password
+        // const payload = {
+        //     email: oldUser.email,
+        //     id: oldUser._id
+        // }
+        // //User exist and now create a one time link valid for 15 minutes
+        // const token = jwt.sign(payload, secret, { expiresIn: '15m' });
+        // const link = `http://localhost:3000/reset-password/${oldUser._id}/${token}`;
+        // console.log(link)
+        response.send(oldUser)
     } 
     catch(error){
         response.send({ status: "error", data: error})

@@ -25,7 +25,6 @@ async function createConnection(){
 }
 
 export const client = await createConnection();
-
 app.use(express.json())
 
 //API endpoints
