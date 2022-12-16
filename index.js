@@ -30,7 +30,7 @@ app.use(express.json())
 //API endpoints
 
 app.get("/",(request,response)=>{
-    response.send("Hello Everyone. Welcome to the Backend application" )
+    response.send("Hello Everyone. Welcome to the Backend application of Customer relation management")
 })
 
 //Routes
